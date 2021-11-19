@@ -4,6 +4,7 @@ const port = 3000; // port 설정
 const bodyParser = require('body-parser');
 const { User } = require("./models/user");
 
+const config = require("./config/key")
 
 //bodyParser 옵션 추가
 // application/x-www-form-urlencoded 형식 데이터 분석해서 가져오도록
@@ -14,11 +15,11 @@ app.use(bodyParser.json());
 
 // mongoose 이용해서 연결
 const mongoose = require("mongoose");
-mongoose.connect('mongodb+srv://Kang:kangbyho7510@youtubeclone.qujqi.mongodb.net/boiler-plate?retryWrites=true&w=majority')
+mongoose.connect(config.mongoURI)
     .then(() => console.log('MongoDB Connected...'))
     .catch(err => console.log(err))
 
-app.get('/', (req, res) => res.send("Hello World!")) //root 에서 hello world 출력 설정
+app.get('/', (req, res) => res.send("Hello World! 나가.")) //root 에서 hello world 출력 설정
 
 // 회원가입 위한 route
 app.post('/register', (req, res) => {
@@ -36,7 +37,7 @@ app.post('/register', (req, res) => {
     })
 })
 
-
+//Nodemon -> 서버 refresh 하면 바로 적용
 
 
 app.listen(port, ()=> console.log(`Example app listening on port ${port}!`)) // port에서 실행   
