@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
-
-
+const bycrpt = require("bcrypt");
+const saltRounds = 10;
+// salt 이용해서 비밀번호 암호화
 const userSchema = mongoose.Schema({
     name: {
         type: String,
@@ -30,6 +31,24 @@ const userSchema = mongoose.Schema({
     tokenExp: {
         type: Number
     }
+})
+
+userSchema.pre('save', function( next ) {
+    //save 전에 function 실행.
+    let user = this;
+    // 비밀번호 암호화 비밀번호 바꿀때만!!!!
+    if(user.isModified('password')){
+        bycrpt.genSalt(saltRounds, function(err, salt){
+            if(err) return next(err)
+    
+            bycrpt.hash(user.password, salt, function(err, hash) {
+                if(err) return next(err)
+                user.password = hash // hash된 비밀번호로 변경
+                next()
+            })
+        })
+    }
+    
 })
 
 const User = mongoose.model('User', userSchema)

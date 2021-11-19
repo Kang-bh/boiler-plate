@@ -26,6 +26,7 @@ app.post('/register', (req, res) => {
     console.log("req.body : ", req.body);
     // 회원 가입 시 필요한 정보들 client에서 가져와서 데이터 베이스에 저장
     const user = new User(req.body)
+    // save 전 암호화 필요
     // req.body에 { id: "hello", passseord :"123"} json형식 으로 존재.
     console.log("=====================");
     console.log("user: ", user);
